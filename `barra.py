@@ -1,86 +1,100 @@
+import tkinter as tk
+from tkinter import ttk
 from decimal import Decimal
 from math import sqrt
+
 class Fio:
-    def __init__(self,comprimento,peso):
+    def __init__(self, comprimento=0, peso=0):
         self.comprimento = comprimento
         self.peso = peso
 
-
-
-    def inserir_atributos(self):
-        self.comprimento = Decimal(input("insira o comprimento"))
-        self.peso = Decimal(input('insira o peso de um fio de macarrao do comprimento desejado'))
-    def mostrar_atributos(self):
-        print('comprimento: ', self.comprimento)
-        print('peso: ', self.peso)
-
-
-
 class Barra:
-    def __init__(self,comprimento,n_fios,peso,nome,esforco_interno, tipo_de_esforco):
-        self.comprimento = None
-        self.n_fios = None
-        self.peso = None
-        self.nome = None
-        self.esforco_interno = None
-        self.tipo_de_esforco = None
-    def inserir_atributosBarra(self):
-        self.comprimento = Decimal(input('insira o comprimento da barra'))
-        self.n_fios = Decimal(input('insira o numero de fios da barra'))
-        self.peso = Decimal(input('insira o peso da barra'))
-        self.nome = input('insira o nome da barra')
-        self.tipo_de_esforco('insira o tipo de esforco da barra')
-
-
-
-    def mostrar_atributosBarra(self):
-        print('comprimento: ', self.comprimento)
-        print('n_fios: ', self.n_fios)
-        print('peso: ', self.peso)
-        print('nome: ', self.nome)
-        print('esforco_interno: ', self.esforco_interno)
-        print('tipo_de_esforco: ', self.tipo_de_esforco)
-
+    def __init__(self):
+        self.comprimento = 0
+        self.n_fios = 0
+        self.peso = 0
+        self.nome = ""
+        self.esforco_interno = 0
+        self.tipo_de_esforco = ""
 
     def calcular_fio(self):
-        self.esforco_interno = Decimal(input('insira o esforço interno da barra'))
         if self.tipo_de_esforco == 'C':
-            resultadoc = sqrt((self.esforco_interno*self.comprimento**2)/27906*1**4)
-            print('o numero de fios necessarios é: ', resultadoc)
+            resultadoc = sqrt((self.esforco_interno * self.comprimento**2) / (27906 * 1**4))
             self.n_fios = resultadoc
         elif self.tipo_de_esforco == 'T':
-            resultadot = self.esforco_interno/Decimal(42.67)
-            print('o numero de fios necessarios é: ', resultadot)
+            resultadot = self.esforco_interno / Decimal(42.67)
             self.n_fios = resultadot
         else:
             print('tipo invalido')
-    def calcular_peso(self):
-        self.peso = self.n_fios * Fio.inserir_atributos(self.peso)
-        print('o peso da barra é: ', self.peso)
-class Ponte:
-    def __init__(self,peso,capacidade,n_barras,geometria,descricao_teste, n_teste):
-        self.peso = None
-        self.capacidade = None
-        self.n_barras = None
-        self.geometria = None
-        self.descricao_teste = None
-        self.n_teste = None
 
-    def inserir_atributosPonte(self):
-        self.peso = Barra.inserir_atributosBarra(Barra.peso) * self.n_barras
-        self.capacidade = int(input('insira a capacidade EM GRAMAS'))
-        self.n_barras = int(input('insira o numero de barras da ponte'))
-        self.geometria = input('insira a geometria da ponte')
-        self.descricao_teste = input('insira a descricao do teste')
-        self.n_teste = int(input('insira o numero do teste'))
-        if self.peso >= 1000:
-            print('ponte invalida')
+class Ponte:
+    def __init__(self):
+        self.peso = 0
+        self.capacidade = 0
+        self.n_barras = 0
+        self.geometria = ""
+        self.descricao_teste = ""
+        self.n_teste = 0
+
+def calculate():
+    try:
+        ponte = Ponte()
+        ponte.peso = Decimal(peso_entry.get())
+        ponte.capacidade = int(capacidade_entry.get())
+        ponte.n_barras = int(n_barras_entry.get())
+        ponte.geometria = geometria_entry.get()
+        ponte.descricao_teste = descricao_teste_entry.get()
+        ponte.n_teste = int(n_teste_entry.get())
+
+        if ponte.peso >= 1000:
+            result_label.config(text='Ponte inválida')
         else:
-            return self.peso
-    def mostrar_atributosPonte(self):
-        print('peso: ', self.peso)
-        print('capacidade: ', self.capacidade)
-        print('n_barras: ', self.n_barras)
-        print('geometria: ', self.geometria)
-        print('descricao_teste: ', self.descricao_teste)
-        print('n_teste: ', self.n_teste)
+            result_label.config(text='Ponte criada com sucesso')
+    except ValueError:
+        result_label.config(text="Por favor, insira valores válidos.")
+
+# Create the main application window
+root = tk.Tk()
+root.title("Criador de Pontes")
+
+# Create input fields
+peso_label = ttk.Label(root, text="Peso da Ponte:")
+peso_label.grid(row=0, column=0, padx=5, pady=5)
+peso_entry = ttk.Entry(root)
+peso_entry.grid(row=0, column=1, padx=5, pady=5)
+
+capacidade_label = ttk.Label(root, text="Capacidade da Ponte (gramas):")
+capacidade_label.grid(row=1, column=0, padx=5, pady=5)
+capacidade_entry = ttk.Entry(root)
+capacidade_entry.grid(row=1, column=1, padx=5, pady=5)
+
+n_barras_label = ttk.Label(root, text="Número de Barras:")
+n_barras_label.grid(row=2, column=0, padx=5, pady=5)
+n_barras_entry = ttk.Entry(root)
+n_barras_entry.grid(row=2, column=1, padx=5, pady=5)
+
+geometria_label = ttk.Label(root, text="Geometria da Ponte:")
+geometria_label.grid(row=3, column=0, padx=5, pady=5)
+geometria_entry = ttk.Entry(root)
+geometria_entry.grid(row=3, column=1, padx=5, pady=5)
+
+descricao_teste_label = ttk.Label(root, text="Descrição do Teste:")
+descricao_teste_label.grid(row=4, column=0, padx=5, pady=5)
+descricao_teste_entry = ttk.Entry(root)
+descricao_teste_entry.grid(row=4, column=1, padx=5, pady=5)
+
+n_teste_label = ttk.Label(root, text="Número do Teste:")
+n_teste_label.grid(row=5, column=0, padx=5, pady=5)
+n_teste_entry = ttk.Entry(root)
+n_teste_entry.grid(row=5, column=1, padx=5, pady=5)
+
+# Create a button to trigger the calculation
+calculate_button = ttk.Button(root, text="Criar Ponte", command=calculate)
+calculate_button.grid(row=6, column=0, columnspan=2, padx=5, pady=5)
+
+# Create a label to display the results
+result_label = ttk.Label(root, text="")
+result_label.grid(row=7, column=0, columnspan=2, padx=5, pady=5)
+
+# Run the application
+root.mainloop()
